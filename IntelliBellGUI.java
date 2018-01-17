@@ -45,7 +45,12 @@ public class IntelliBellGUI implements Runnable{
 		this.createProfile = createProfile;
 		this.bellProfile = bprofile;
 		this.as=as;
-		t = new  Thread(this, "IntelliBellGUI");
+		String tname = new String("IntelliBellGUI");
+		
+		if(!createProfile)
+			tname= tname+" - "+bprofile.getName();
+		
+		t = new  Thread(this,tname);
 		t.start();
 	}
 	
@@ -68,6 +73,9 @@ public class IntelliBellGUI implements Runnable{
 		createContents();
 		shlIntellibell.open();
 		shlIntellibell.layout();
+		//minimize the window when the daemon is running on pre-defined profile
+		shlIntellibell.setMinimized(!createProfile);
+		
 		while (!shlIntellibell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -81,7 +89,10 @@ public class IntelliBellGUI implements Runnable{
 	protected void createContents() {
 		shlIntellibell = new Shell();
 		shlIntellibell.setSize(450, 300);
-		shlIntellibell.setText("IntelliBell");
+		if(createProfile)
+			shlIntellibell.setText("IntelliBell - Create Profile");
+		else
+			shlIntellibell.setText("IntelliBell - "+ bellProfile.getName());
 		shlIntellibell.addShellListener(new ShellListener() {
 			@Override
 			public void shellClosed(ShellEvent event) {

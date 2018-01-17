@@ -93,6 +93,8 @@ public class CreateNewProfile {
 	 */
 	protected void createContents() {
 		profile = new BellProfile();
+		profile.setName(profileName);
+		
 		shell = new Shell();
 		shell.setMinimumSize(new Point(250, 250));
 		shell.setSize(450, 600);
@@ -525,10 +527,10 @@ public class CreateNewProfile {
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					if(profile.getNoOfBells() != 0) {
-					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(profileName));
-					oos.writeObject(profile);
-					oos.flush();
-					MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+						ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(profileName));
+						oos.writeObject(profile);
+						oos.flush();
+						MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
 	        			dialog.setText("Summary");
 	        			String message = null;
 	        			message=("New profile "+profileName+" has been created.\n\n"+
@@ -543,7 +545,6 @@ public class CreateNewProfile {
 	        			dialog.setMessage(message);
 	        			dialog.open();
 	        			oos.close();
-	        			profile.createTimer();
 	        			shell.close();
 					}else {
 						MessageBox dialog =

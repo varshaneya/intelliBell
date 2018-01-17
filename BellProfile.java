@@ -27,6 +27,9 @@ public class BellProfile implements Serializable{
 	//serial`VersionID for serialisation
 	private static final long serialVersionUID = -905136585127639302L;
 	
+	//name of the profile
+	private String name;
+	
 	//Calendar arrays to store the start and end dates
 	private Calendar academicYrStart[];
 	private Calendar academicYrEnd[];
@@ -94,8 +97,24 @@ public class BellProfile implements Serializable{
 		academicYrDuration = new ArrayList<String>();
 		holidays = new ArrayList<GregorianCalendar>();
 		sdf = new SimpleDateFormat("dd-MM-yyyy");
+		name =  new String();
 	}
 	
+	/**
+	 * Sets the name of the profile
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * Returns the name of the current profile
+	 * @return name
+	 */
+	public String getName() {
+		return this.name;
+	}
 	/**
 	 * Checks holidays class member to see if today is listed as holiday or not.
 	 * @param cal1
@@ -224,11 +243,12 @@ public class BellProfile implements Serializable{
     {
 		createTimer();
 		nextSlot = tmpNextSlot;
-        for(String s:ip)
-        	for(int ring:delay) {
+		
+        for(int ring:delay) {
+        	for(String s:ip)
         		timer[ip.indexOf(s)].schedule(new SendMessage(s,duration.get(tmpNextSlot)),ring);
-        		++tmpNextSlot;
-        	}
+        	++tmpNextSlot;
+        }
     }
 	
 	/**
@@ -472,10 +492,8 @@ public class BellProfile implements Serializable{
 	 */
 	
 	public void createTimer() {
-		timer = new Timer[ip.size()];
+		timer = new Timer[getNoOfBells()];
 		for(int i=0;i<ip.size();i++)
-			timer[i]=new Timer();
-	}
-	
-	
+			timer[i]=new Timer(ip.get(i));
+	}	
 }
